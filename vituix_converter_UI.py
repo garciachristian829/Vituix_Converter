@@ -23,7 +23,8 @@ class Ui_MainWindow(object):
         MainWindow.setMinimumSize(QtCore.QSize(400, 500))
         MainWindow.setMaximumSize(QtCore.QSize(400, 500))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("Icon/Vituix_Converter_Icon_R1.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("D:/Python Projects/HATS SAMS Conversion/IconVituix_Converter_Icon_R1.ico"),
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -70,7 +71,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Vituix Converter"))
         self.pushButton_hats.setText(_translate("MainWindow", "Vituix HATS"))
         self.pushButton_sams.setText(_translate("MainWindow", "Vituix SAMS"))
 

@@ -106,5 +106,6 @@ class MyMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
+    app.setWindowIcon(QtGui.QIcon("D:/Python Projects/HATS SAMS Conversion/Icon/Vituix_Converter_Icon_R1.ico"))
     win = MyMainWindow()
     sys.exit(app.exec_())
