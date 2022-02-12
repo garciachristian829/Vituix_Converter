@@ -3,7 +3,7 @@ import shutil
 import sys
 
 import pandas as pd
-from PyQt5 import QtGui, QtWidgets
+from PyQt5 import QtGui, QtWidgets, QtCore
 from PyQt5.QtWidgets import *
 
 from vituix_converter_UI import (Ui_MainWindow)
@@ -34,7 +34,12 @@ class MyMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.pushButton_hats.clicked.connect(self.hats_conversion)
         self.pushButton_sams.clicked.connect(self.sams_conversion)
-        self.listWidget.setAcceptDrops(True)
+        self.tableWidget.setAcceptDrops(True)
+        self.tableWidget.viewport().installEventFilter(self)
+        types = ['text/uri-list']
+        types.extend(self.tableWidget.mimeTypes())
+        self.tableWidget.mimeTypes = lambda: types
+        self.tableWidget.setRowCount(0)
 
         self.show()
 
@@ -105,17 +110,19 @@ class MyMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
                 process_completed()
 
-    def dragEnterEvent(self, event):
-        if event.mimeData().hasUrls():
-            event.accept()
-        else:
-            event.ignore()
+    def eventFilter(self, source, event):
+        if event.type() == QtCore.QEvent.Drop and event.mimeData().hasUrls():
+            for url in event.mimeData().urls():
+                self.addFile(url.toLocalFile())
+            return True
+        return super().eventFilter(source, event)
 
-    def dropEvent(self, event):
-        files = [u.toLocalFile() for u in event.mimeData().urls()]
-
-        for f in files:
-            print(f)
+    def addFile(self, filepath):
+        row = self.tableWidget.rowCount()
+        self.tableWidget.insertRow(row)
+        item = QtWidgets.QTableWidgetItem(filepath)
+        self.tableWidget.setItem(row, 0, item)
+        self.tableWidget.resizeColumnToContents(0)
 
 
 if __name__ == "__main__":
