@@ -34,6 +34,8 @@ class MyMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.pushButton_hats.clicked.connect(self.hats_conversion)
         self.pushButton_sams.clicked.connect(self.sams_conversion)
+        self.listWidget.setAcceptDrops(True)
+
         self.show()
 
     def hats_conversion(self):
@@ -102,6 +104,18 @@ class MyMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     sams_data.to_csv(newPath, sep='\t', index=False, na_rep='NaN', header=False)
 
                 process_completed()
+
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.accept()
+        else:
+            event.ignore()
+
+    def dropEvent(self, event):
+        files = [u.toLocalFile() for u in event.mimeData().urls()]
+
+        for f in files:
+            print(f)
 
 
 if __name__ == "__main__":
