@@ -1,6 +1,7 @@
 import os
 import shutil
 import sys
+import time
 
 import pandas as pd
 from PyQt5 import QtGui, QtWidgets, QtCore
@@ -12,7 +13,7 @@ from vituix_converter_UI import (Ui_MainWindow)
 def no_file_selected():
     msg = QMessageBox()
     msg.setIcon(QMessageBox.Warning)
-    msg.setWindowIcon(QtGui.QIcon("D:/Python Projects/HATS SAMS Conversion/Icon/Vituix_Converter_Icon_R1.ico"))
+    msg.setWindowIcon(QtGui.QIcon("Vituix_Converter_Icon_R1.ico"))
     msg.setText("No File Was Selected!")
     msg.setWindowTitle("Warning!")
     retval = msg.exec_()
@@ -21,7 +22,7 @@ def no_file_selected():
 def process_completed():
     msg = QMessageBox()
     msg.setIcon(QMessageBox.Information)
-    msg.setWindowIcon(QtGui.QIcon("D:/Python Projects/HATS SAMS Conversion/Icon/Vituix_Converter_Icon_R1.ico"))
+    msg.setWindowIcon(QtGui.QIcon("Vituix_Converter_Icon_R1.ico"))
     msg.setText("Files are converted.")
     msg.setWindowTitle("Completed!")
     retval = msg.exec_()
@@ -34,14 +35,6 @@ class MyMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.pushButton_hats.clicked.connect(self.hats_conversion)
         self.pushButton_sams.clicked.connect(self.sams_conversion)
-        self.tableWidget.setAcceptDrops(True)
-        self.tableWidget.viewport().installEventFilter(self)
-        types = ['text/uri-list']
-        types.extend(self.tableWidget.mimeTypes())
-        self.tableWidget.mimeTypes = lambda: types
-        self.tableWidget.setRowCount(0)
-
-        self.show()
 
     def hats_conversion(self):
 
@@ -110,23 +103,10 @@ class MyMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
                 process_completed()
 
-    def eventFilter(self, source, event):
-        if event.type() == QtCore.QEvent.Drop and event.mimeData().hasUrls():
-            for url in event.mimeData().urls():
-                self.addFile(url.toLocalFile())
-            return True
-        return super().eventFilter(source, event)
-
-    def addFile(self, filepath):
-        row = self.tableWidget.rowCount()
-        self.tableWidget.insertRow(row)
-        item = QtWidgets.QTableWidgetItem(filepath)
-        self.tableWidget.setItem(row, 0, item)
-        self.tableWidget.resizeColumnToContents(0)
-
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
-    app.setWindowIcon(QtGui.QIcon("D:/Python Projects/HATS SAMS Conversion/Icon/Vituix_Converter_Icon_R1.ico"))
+    app.setWindowIcon(QtGui.QIcon("Vituix_Converter_Icon_R1.ico"))
     win = MyMainWindow()
+    win.show()
     sys.exit(app.exec_())
